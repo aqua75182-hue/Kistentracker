@@ -18,14 +18,16 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+      - name: Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
+      - name: Install Android build platform
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
       - name: Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
-      - name: Android SDK packages
-        run: |
-          echo "y" | sdkmanager --licenses > /dev/null || true
-          sdkmanager "platforms;android-35" "build-tools;35.0.0"
       - name: Build APK
         run: gradle --no-daemon --stacktrace assembleDebug
       - name: Upload APK
